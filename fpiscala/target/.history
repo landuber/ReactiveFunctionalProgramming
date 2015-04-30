@@ -1,0 +1,32 @@
+compile
+import MyModule.fib
+compile
+clean
+compile
+run
+compile
+run
+compile
+run
+compile
+run
+compile
+run
+compile
+run
+compile
+clean
+compile
+console
+compile
+console
+compile
+import fpinscala.datastructures._
+console
+compile
+console
+compile
+console
+compile
+console
+compile
