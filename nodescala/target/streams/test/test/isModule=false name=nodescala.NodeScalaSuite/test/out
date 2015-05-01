@@ -3,18 +3,6 @@
 [0m[[0minfo[0m] [0m[32m- A Future should never be completed[0m[0m
 [0m[[0minfo[0m] [0m[32m- Delay waits given duration before returning[0m[0m
 [0m[[0minfo[0m] [0m[32m- Delay doesn't go beyond given duration[0m[0m
-[0m[[0minfo[0m] [0m[32m- Now returns immediately[0m[0m
+[0m[[0minfo[0m] [0m[32m- Delay is misbehaving[0m[0m
 [0m[[0minfo[0m] [0m[32m- Now throws exception when value not available[0m[0m
-[0m[[0minfo[0m] [0m[31m- Server should serve requests *** FAILED ***[0m[0m
-[0m[[0minfo[0m] [0m[31m  scala.NotImplementedError: an implementation is missing[0m[0m
-[0m[[0minfo[0m] [0m[31m  at scala.Predef$.$qmark$qmark$qmark(Predef.scala:225)[0m[0m
-[0m[[0minfo[0m] [0m[31m  at nodescala.NodeScala$class.start(nodescala.scala:44)[0m[0m
-[0m[[0minfo[0m] [0m[31m  at nodescala.NodeScalaSuite$DummyServer.start(tests.scala:121)[0m[0m
-[0m[[0minfo[0m] [0m[31m  at nodescala.NodeScalaSuite$$anonfun$9.apply$mcV$sp(tests.scala:138)[0m[0m
-[0m[[0minfo[0m] [0m[31m  at nodescala.NodeScalaSuite$$anonfun$9.apply(tests.scala:136)[0m[0m
-[0m[[0minfo[0m] [0m[31m  at nodescala.NodeScalaSuite$$anonfun$9.apply(tests.scala:136)[0m[0m
-[0m[[0minfo[0m] [0m[31m  at org.scalatest.Transformer$$anonfun$apply$1.apply$mcV$sp(Transformer.scala:22)[0m[0m
-[0m[[0minfo[0m] [0m[31m  at org.scalatest.OutcomeOf$class.outcomeOf(OutcomeOf.scala:85)[0m[0m
-[0m[[0minfo[0m] [0m[31m  at org.scalatest.OutcomeOf$.outcomeOf(OutcomeOf.scala:104)[0m[0m
-[0m[[0minfo[0m] [0m[31m  at org.scalatest.Transformer.apply(Transformer.scala:22)[0m[0m
-[0m[[0minfo[0m] [0m[31m  ...[0m[0m
+[0m[[0minfo[0m] [0m[32m- Server should serve requests[0m[0m

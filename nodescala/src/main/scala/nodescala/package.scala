@@ -54,10 +54,12 @@ package object nodescala {
       fs foreach {
         case f =>
           f onComplete {
-              case s@Success(_) =>
-                p.complete(s)
-              case Failure(exception) =>
-                p.failure(exception)
+              tryValue =>
+              p.tryComplete(tryValue)
+              // case s@Success(_) =>
+              //   p.tryComplete(s)
+              // case Failure(exception) =>
+              //   p.failure(exception)
           }
       }
       p.future
@@ -88,7 +90,14 @@ package object nodescala {
 
     /** Creates a cancellable context for an execution and runs it.
      */
-    def run()(f: CancellationToken => Future[Unit]): Subscription = ???
+    def run()(f: CancellationToken => Future[Unit]): Subscription = {
+      val cts = CancellationTokenSource()
+      val ft = f(cts.cancellationToken)
+      ft onComplete {
+        case _ => cts.unsubscribe()
+      } 
+      cts
+    }
 
   }
 
@@ -119,13 +128,18 @@ package object nodescala {
      *  The resulting future contains a value returned by `cont`.
      */
     def continueWith[S](cont: Future[T] => S): Future[S] = {
-      Future {
-          cont {
-            for {
-              t <- f
-            } yield t
+      val p = Promise[S]
+      f onComplete {
+        case _ => {
+          try {
+            val cr = cont(f)
+            p.success(cr)
+          } catch {
+            case ex: Exception => p.failure(ex)                  
           }
+        }
       }
+      p.future
     }
 
     /** Continues the computation of this future by taking the result
@@ -137,8 +151,14 @@ package object nodescala {
     def continue[S](cont: Try[T] => S): Future[S] = {
       val p = Promise[S]
       f onComplete {
-        case tryValue =>
-          p.success(cont(tryValue))
+        case tryValue => {
+          try {
+            val cr = cont(tryValue)
+            p.success(cr)
+          } catch {
+            case ex: Exception => p.failure(ex)
+          }
+        }
       }
       p.future
     }

@@ -20,7 +20,7 @@ trait NodeScala {
 
   def createListener(relativePath: String): Listener
 
-  /** Uses the response object to respond to the write the response back.
+  /** Uses the response object to respond to write the response back.
    *  The response should be written back in parts, and the method should
    *  occasionally check that server was not stopped, otherwise a very long
    *  response may take very long to finish.
@@ -29,7 +29,12 @@ trait NodeScala {
    *  @param token        the cancellation token
    *  @param body         the response to write back
    */
-  private def respond(exchange: Exchange, token: CancellationToken, response: Response): Unit = ???
+  private def respond(exchange: Exchange, token: CancellationToken, response: Response): Unit = {
+    while(!token.isCancelled && response.hasNext) {
+      exchange.write(response.next)
+    }
+    exchange.close()
+  }
 
   /** A server:
    *  1) creates and starts an http listener
@@ -41,7 +46,19 @@ trait NodeScala {
    *  @param handler        a function mapping a request to a response
    *  @return               a subscription that can stop the server and all its asynchronous operations *entirely*
    */
-  def start(relativePath: String)(handler: Request => Response): Subscription = ???
+  def start(relativePath: String)(handler: Request => Response): Subscription = {
+    val listener = createListener(relativePath);
+    val listnerSubscription = listener.start();
+    Future.run() { ct =>
+      async {
+        if(ct.nonCancelled) {
+          val t = await(listener.nextRequest)
+          respond(t._2, ct, handler(t._1))
+          start(relativePath)(handler)
+        }
+      }
+    }
+  }
 
 }
 

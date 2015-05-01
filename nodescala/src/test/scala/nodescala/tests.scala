@@ -50,12 +50,19 @@ class NodeScalaSuite extends FunSuite {
     }
   }
 
-  test("Now returns immediately") {
-    val f = Future {
-      3
+  test("Delay is misbehaving") {
+    val timeOut: Future[String] = Future.delay(20 seconds) continueWith {
+      f => "Server timeout!"
     }
-    assert(f.now == 3)
+    assert(Await.result(timeOut, 22 seconds) == "Server timeout!")
   }
+
+  // test("Now returns immediately") {
+  //   val f = Future {
+  //     3
+  //   }
+  //   assert(f.now == 3)
+  // }
 
   test("Now throws exception when value not available") {
     val f = Future {
@@ -71,6 +78,7 @@ class NodeScalaSuite extends FunSuite {
       case t:NoSuchElementException => assert(true)
     }
   }
+
 
 
   
