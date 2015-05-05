@@ -40,6 +40,8 @@ object List {
     case Cons(x, xs) => Cons(head, xs)
   }
 
+  def init[A](l : List[A]) : List[A] = 
+
   def apply[A](as: A*): List[A] =
     if(as.isEmpty) Nil
     else Cons(as.head, apply(as.tail: _*))
@@ -60,6 +62,7 @@ object Try {
     try {
       Success(r)
     }
-    catch { case t => Failure(t) }
+    catch:q
+    { case t => Failure(t) }
   }
 }
