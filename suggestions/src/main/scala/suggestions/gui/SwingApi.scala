@@ -61,7 +61,6 @@ trait SwingApi {
             case _ => observer.onCompleted()
           }
         }
-
     }
   }
 
